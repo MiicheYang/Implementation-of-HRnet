@@ -1,0 +1,97 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+
+%%%%%%%%% TITLE
+\title{Implementation of Deep High-Resolution Representation\\ Learning for Visual Recognition}
+
+\author{Shiyao Xie\\
+2016xxxxxx\\
+\and
+Zeyuan Yang\\
+2017011577\\
+\and
+Zifei Zhu\\
+2017xxxxxx\\
+\and
+Shengge Yang\\
+2016xxxxxx\\
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+   High-Resolution representation is a popular topic in computer vision research field.
+   After researching on related works in this field,
+   we decided to implement a recent released paper at IEEE 2020,
+   \emph{Deep High-Resolution Representation Learning for Visual Recognition} (HRnet).\cite{wang2019deep}
+   To completely comprehend the paper,
+   we reproduced the code and ran it on an open source dataset.
+   Moreover, the structure and outputs are compared with the source code.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+
+In many fields, high-resolution representation is important,
+such as human position detecting.
+How to extract key features from high-resolution images becomes a popular topic,
+also a challenging problem.
+Almost all previous state-of-art works share a similar method,
+which is applying a high-to-low resolution network and extracting high-resolution representation from low-resolution features.
+Instead, this work reshapes the entire network structure in two aspects.
+First, it parallels the convolution streams,
+Applying convolution on each resolution simultaneously.
+Also, this work adds multiresolution fusion modules.
+Every time initializing a new convolution stream,
+the infomation of each resolution is exchanged.
+By repeating this, this structure is more precise in spatial and get better results.
+
+This paper is based on a similar paper released on CVPR 2019,
+\emph{Deep High-Resolution Representation Learning for Human Pose Estimation}.\cite{sun2019deep}
+These two papers share a similar network structure.
+HRnet applied some finetuning on the previous network structure and promoted it to more tasks.
+Therefore, we mainly digged into this work and reproduce its code.
+
+%------------------------------------------------------------------------
+\section{Related Works}
+
+\section{Problem Definition}
+
+\section{Approach}
+
+\section{Technique Details}
+
+\section{Experiments and Performance}
+
+\section{Insights Analysis}
+
+\section{Conclusion}
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{document}
