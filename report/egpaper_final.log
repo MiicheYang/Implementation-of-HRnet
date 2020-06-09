@@ -1,10 +1,10 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.8.27)  8 JUN 2020 22:30
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/W32TeX) (preloaded format=xelatex 2019.8.27)  9 JUN 2020 10:33
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/Administrator/Desktop/HRNet/Implementation-of-HRNet/report/egpaper_final
-(c:/Users/Administrator/Desktop/HRNet/Implementation-of-HRNet/report/egpaper_final.tex
+**c:/Users/Administrator/Desktop/HRNet/Implementation-of-HRNet/Implementation-of-HRnet/report/egpaper_final
+(c:/Users/Administrator/Desktop/HRNet/Implementation-of-HRNet/Implementation-of-HRnet/report/egpaper_final.tex
 LaTeX2e <2018-12-01>
 (d:/texlive/2019/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2018/09/03 v1.4i Standard LaTeX document class
@@ -304,50 +304,38 @@ LaTeX Font Warning: Font shape `TU/ptm/m/it' undefined
 (Font)              using `TU/ptm/m/n' instead on input line 44.
 
 
-LaTeX Warning: Citation `sun2019deep' on page 1 undefined on input line 72.
-
-(./egpaper_final.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-Underfull \hbox (badness 4899) in paragraph at lines 9--12
-[]\TU/ptm/m/it/9 FirstName Alpher and FirstName Fotheringham-
- []
-
-LaTeX Font Info:    Try loading font information for TU+pcr on input line 22.
-LaTeX Font Info:    No file TUpcr.fd. on input line 22.
-
-LaTeX Font Warning: Font shape `TU/pcr/m/n' undefined
-(Font)              using `TU/lmr/m/n' instead on input line 22.
-
-)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 97.
  (d:/texlive/2019/texmf-dist/tex/generic/oberdiek/se-ascii-print.def
 File: se-ascii-print.def 2016/05/16 v1.11 stringenc: Printable ASCII characters
 ) [1
 
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 97.
+Underfull \hbox (badness 1400) in paragraph at lines 122--128
+\TU/ptm/m/it/10 Hourglass Network released on 2016.[[]] Hourglass
+ []
+
+(./egpaper_final.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 157.
+ [2]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 157.
  (./egpaper_final.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 97.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 97.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 157.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 157.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 97.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 157.
  ) 
 Here is how much of TeX's memory you used:
- 9149 strings out of 492909
- 125843 string characters out of 6136299
- 211594 words of memory out of 5000000
- 13135 multiletter control sequences out of 15000+600000
+ 9142 strings out of 492909
+ 125902 string characters out of 6136299
+ 212594 words of memory out of 5000000
+ 13130 multiletter control sequences out of 15000+600000
  9875 words of font info for 39 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 32i,8n,27p,293b,324s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,8n,27p,317b,324s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on egpaper_final.pdf (1 page).
+Output written on egpaper_final.pdf (2 pages).
