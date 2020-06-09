@@ -77,7 +77,67 @@ Therefore, we mainly digged into this work and reproduce its code.
 %------------------------------------------------------------------------
 \section{Related Works}
 
+We reviewed closely related works in high-resolution representation.
+As mentioned above, most of these networks share a similar structure.
+First, downsample the initial image into low-resolution features and then recover the representation.
+We will introduce four examples here to elaborate this.
+
+\subsection{DeconvNet}
+
+The first one we illustrate is \emph{Deconvolutional Network} released on 2015.\cite{noh2015learning}
+Deconvolutional network has a symmetric structure,
+with only convolutional modules and transpose convolutional modules.
+DeconvNet uses ReLU as activate function and maxpooling.
+The unpooling operation is guided by the maximum index.
+This is a typical structure as we introduced,
+downsampling the high-resolution images with a stack of convolutional layers and upsampling with a same structure of transpose convolutional modules.
+
+The main improvement of DeconvNet is using deconvolution layers of different kernel sizes,
+which reduces the information loss.
+Also, it maintains deep network structure, which is part of the VGG16 structure \cite{zhang2015accelerating}, to extract features.
+DeconvNet outperformed most previous works when released.
+
+\subsection{SegNet}
+
+Another related work is \emph{SegNet} released by Vijay on 2015.\cite{badrinarayanan2015segnet}
+In our opinion, SegNet is similar to DeconvNet.
+The difference is SegNet use simplified convolution modules instead of the deep convolution modules.
+DeconvNet maintains around 90\% of the parameters in VGG16,
+which results in consuming running time.
+SegNet removes the full connection layers and improve the time complexity.
+
+\subsection{Unet}
+
+We also reviewed the paper of \emph{Unet}, which is mentioned on the class.\cite{ronneberger2015unet}
+Main difference in Unet is add skip connection between the downsampling layers and upsampling layers.
+During the upsampling process,
+it combines the convolution layer and the current layer.
+This kind of maintains more information from the initial images.
+Also, Unet overlaps the edge of the initial image to keep the fringe information.
+Unet is a symbolic network in high-resolution representation,
+which is implemented in many other fields as well.
+
+\subsection{Hourglass}
+
+The last work we want to elaborate is the Stacked Hourglass Network released on 2016.\cite{alej2016stacked}
+Hourglass added residual modules between the skip connection in Unet.
+The whole network structure looks like a Hourglass.
+This improvement integrates information from different modules,
+similar as Unet.
+We would not illustrate more details here.
+
 \section{Problem Definition}
+
+This work is a high-resolution representation task,
+applied in fields  like semantic segmentation and human pose estimation.
+High-resolution images are inputed into the model and the output is a map of each pixel.
+
+Our major work is to reproduce the source code.
+To test the performance of our model,
+we compared our model and one of the models provided in the paper on open source dataset CIFAR10.
+Regarding to the scale of the parameters and the computing power of the provided server,
+we chose one of the smallest models, \emph{cls\_hrnet\_w18\_small\_v1}, and used only one fifth of the dataset.
+The loss and accuracy of the results of our model is reported.
 
 \section{Approach}
 
