@@ -65,7 +65,7 @@ First, it parallels the convolution streams,
 Applying convolution on each resolution simultaneously.
 Also, this work adds multiresolution fusion modules.
 Every time initializing a new convolution stream,
-the infomation of each resolution is exchanged.
+the information of each resolution is exchanged.
 By repeating this, this structure is more precise in spatial and get better results.
 
 This paper is based on a similar paper released on CVPR 2019,
@@ -141,13 +141,64 @@ The loss and accuracy of the results of our model is reported.
 
 \section{Approach}
 
+Our approach is almost the same as the structure illustrated in the paper.
+We cite an image in the paper, which we think generalizes the overview structure.
+
+\begin{figure}[h]
+   \begin{center}
+      \includegraphics[width=0.8\linewidth]{2.png}
+   \end{center}
+      \caption{Structure of HRnet from the paper}
+   \label{fig:long}
+   \label{fig:onecol}
+\end{figure}
+
+From the figure we can tell that there are two modules in this model,
+parallel multi-resolution convolution and repeated multi-resolution fusion.
+Therefore, we would like to introduce those modules and some our difference.
+
+One key improvement of HRnet is the parallel the convolution stream in previous models.
+Each line of convolutions is a paralleled stream of certain resolution.
+In HRnet, each resolution is assigned to a stream of convolutions
+and these streams are processed together.
+Blocks in each stream are basic blocks in ResNet.
+When initializing each stream,
+there is a multi-resolution fusion module to exchange information from different resolution convolution streams to reduce information loss.
+Specific formulas of each module is illustrated in the paper explicitly.
+We will not list the formulas here.
+
+Moreover, we found a problem while reading the source code.
+From the structure we can tell that
+in each multi-resolution fusion module,
+the initialed stream gains the information from all previous convolution streams.
+However, in the source code,
+The initialed stream only accept the information of the convolution with the lowest resolution in previous streams.
+In our reproduced model, we applied the structure in the paper.
+The improvement in performance is negligible,
+but there's indeed difference.
+
 \section{Technique Details}
+
+We use Python language with PyTorch framework.
+As mentioned, our model is structured different from the source code.
+To emphasize the difference,
+we made a figure to show our structure:
+
+\begin{figure}[h]
+   \begin{center}
+      \includegraphics[width=0.8\linewidth]{3.png}
+   \end{center}
+      \caption{Our structure.}
+   \label{fig:long}
+   \label{fig:onecol}
+\end{figure}
+
+This is a simplified but more explicit representation of the structure.
+We built our model based on it.
 
 \section{Experiments and Performance}
 
-We built the model with mentioned technique.
-The experiment settings are listed here.
-
+Our experiment settings are listed here.
 
 \begin{table}[h]
    \begin{center}
@@ -165,9 +216,44 @@ The experiment settings are listed here.
    \end{center}  
 \end{table}
 
+The reproduced model and the initial model in the paper both share these settings.
+We ran the experiment for 100 epochs until the loss curve converged.
+The running time for each epoch is around \emph{to do}.
+Here's the performance of the two models:
+
+\begin{figure}[h]
+   \begin{center}
+      \includegraphics[width=0.8\linewidth]{1.png}
+   \end{center}
+      \caption{The performance of two models. The left one is our model 
+      and the right one is scratched from the paper.}
+   \label{fig:long}
+   \label{fig:onecol}
+\end{figure}
+
+The trend of loss and accuracy is similar.
+And after 100 epochs, the performance of our model is better than the initial model.
+
 \section{Insights Analysis}
 
+
+
 \section{Conclusion}
+
+HRnet is the state-of-art model in high-resolution representation field.
+It entirely reshaped the structure of previous model,
+importing parallel streams and fusions.
+As mentioned in the class,
+breakthroughs in the deep learning is not refining the current models
+or applying current models in other fields.
+Only innovation like this can lead to the improvement in the entire field.
+
+Also, by digging into a paper and its source code,
+we found the details behind the paper.
+While reading papers,
+we always just go through the context and comprehend the model easily.
+That's far from enough.
+Only by burying ourselves in the paper can we understand the paper thoroughly.
 
 {\small
 \bibliographystyle{ieee_fullname}
