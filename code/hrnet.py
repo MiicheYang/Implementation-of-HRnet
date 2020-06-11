@@ -14,20 +14,14 @@ import torch._utils
 import torch.nn.functional as F
 logger = logging.getLogger(__name__)
 
+
+#### here is a part of source code from RESNET and HRNET ####
+#### no need to modify the basic source code ####
 def conv3x3(in_planes, out_planes, stride=1):
 	"""3x3 convolution with padding"""
 	return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
 					 padding=1, bias=False)
 
-def down(in_planes,out_planes):
-	return nn.Sequential(nn.Conv2d(in_planes,out_planes, kernel_size=3, stride=2, padding=1, bias=False),
-						 nn.BatchNorm2d(out_planes, momentum=BN_MOMENTUM),
-						 nn.ReLU(inplace=True))
-
-def trans(in_planes,out_planes):
-	return nn.Sequential(nn.Conv2d(in_planes,out_planes, kernel_size=3, stride=1, padding=1, bias=False),
-						 nn.BatchNorm2d(out_planes, momentum=BN_MOMENTUM),
-						 nn.ReLU(inplace=True))
 
 class BasicBlock(nn.Module):
 	expansion = 1
@@ -302,6 +296,21 @@ blocks_dict = {
 
 BN_MOMENTUM=0.1
 
+#### the following code is ours ####
+
+#### a function of downsample which changes channels(planes) and resolutions ####
+
+def down(in_planes,out_planes):
+	return nn.Sequential(nn.Conv2d(in_planes,out_planes, kernel_size=3, stride=2, padding=1, bias=False),
+						 nn.BatchNorm2d(out_planes, momentum=BN_MOMENTUM),
+						 nn.ReLU(inplace=True))
+
+#### a function of transform which changes channels(planes) but not resolutions ####
+def trans(in_planes,out_planes):
+	return nn.Sequential(nn.Conv2d(in_planes,out_planes, kernel_size=3, stride=1, padding=1, bias=False),
+						 nn.BatchNorm2d(out_planes, momentum=BN_MOMENTUM),
+						 nn.ReLU(inplace=True))
+
 class diy_HRNET(nn.Module):
 	
 	def __init__(self,cfg,**kwargs):
@@ -342,7 +351,7 @@ class diy_HRNET(nn.Module):
 		self.classifier = nn.Linear(2048, 10)
 		
 	
-
+	#### this is similar with "_make_layer" in RESNET,but only one bottleneck is created ####
 	def _make_bottleneck_block(self,inplanes,planes,stride=1):
 		downsample=nn.Sequential(nn.Conv2d(inplanes,planes*4,kernel_size=1, stride=stride, bias=False),
 								 nn.BatchNorm2d(planes * 4, momentum=BN_MOMENTUM),)
@@ -350,7 +359,7 @@ class diy_HRNET(nn.Module):
 		return nn.Sequential(_bottleneck_block)
 	
 	
-	
+	#### make so-called "stage",just use HighResolutionModule ####
 	def _make_stage(self, layer_config, num_inchannels,
 					multi_scale_output=True):
 		num_branches = layer_config['NUM_BRANCHES']
@@ -365,6 +374,8 @@ class diy_HRNET(nn.Module):
 						multi_scale_output)
 		return nn.Sequential(modules)
 	
+	#### make incremental layers, a list of bottleneck which accounts for different channels ####
+	#### I don't know why this layer is needed…… just use it~                                ####
 	def _make_incremental_layers(self,inplanes):
 		head_channels=[32,64,128,256]
 		incre_modules = []
@@ -374,13 +385,15 @@ class diy_HRNET(nn.Module):
 		
 		return nn.ModuleList(incre_modules)
 	
+	#### branches which accounts for different channels finally merge by downsampling ####
 	def _make_downsample_layers(self):
 		head_channels=[128,256,512,1024]
 		downsamp_modules = []
 		for i in range(3):
 			downsamp_modules.append(down(head_channels[i],head_channels[i+1]))
 		return  nn.ModuleList(downsamp_modules)
-		
+	
+	#### change 1024 channels to another channels,here is 2048 ####
 	def _make_final_layer(self,out_planes):
 		return nn.Sequential(nn.Conv2d(1024,out_planes, kernel_size=3, stride=1, padding=1, bias=False),
 							 nn.BatchNorm2d(out_planes, momentum=BN_MOMENTUM),
@@ -390,12 +403,17 @@ class diy_HRNET(nn.Module):
 		x = self.base(x)
 		x = self.stage1(x)
 		
+		#### from now on,the data has been multiplied to diverse channels(resolutions)####
+		
+		#### so-called "transition layer" is a list indeed                            ####
 		x_list = []
 		for i in range(self.stage2_cfg['NUM_BRANCHES']):
 			if self.transition1[i] is not None:
 				x_list.append(self.transition1[i](x))
 			else:
 				x_list.append(x)
+				
+		#### once the channels(resolutions) are matching,data list can be directly input#### 
 		y_list = self.stage2(x_list)
 		
 		x_list = []
@@ -414,7 +432,7 @@ class diy_HRNET(nn.Module):
 				x_list.append(y_list[i])
 		y_list = self.stage4(x_list)
 		
-		# Classification Head
+		#### Classification Head,merge the output of different branches ####
 		y = self.incre_modules[0](y_list[0])
 		for i in range(len(self.downsamp_modules)):
 			y = self.incre_modules[i + 1](y_list[i + 1]) + \
@@ -431,6 +449,7 @@ class diy_HRNET(nn.Module):
 		y = self.classifier(y)
 		
 		return y
+	
 	
 	def init_weights(self, pretrained='', ):
 		logger.info('=> init weights from normal distribution')
