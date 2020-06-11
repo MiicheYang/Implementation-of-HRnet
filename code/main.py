@@ -4,7 +4,7 @@ import torch.optim as optim
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
 import data
-import models
+import resnet18
 import os
 import numpy as np
 import cls_hrnet
@@ -25,18 +25,13 @@ def train_model(model,train_loader, valid_loader, criterion, optimizer,scheduler
         total_correct = 0
 
         for i,(inputs, labels) in enumerate(train_loader):
-            #print("batch_number:",i)
-            #inputs = inputs.to(device)
             labels = labels.cuda(non_blocking=True)
-            #print("pass_to_device")
             optimizer.zero_grad()
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             _, predictions = torch.max(outputs, 1)
-            #print("pass_to_loss")
             loss.backward()
             optimizer.step()
-            #print("pass_to_back")
             total_loss += loss.item() * inputs.size(0)
             total_correct += torch.sum(predictions == labels.data)
 
@@ -49,7 +44,6 @@ def train_model(model,train_loader, valid_loader, criterion, optimizer,scheduler
         total_loss = 0.0
         total_correct = 0
         for inputs, labels in valid_loader:
-            #inputs = inputs.to(device)
             labels = labels.cuda(non_blocking=True)
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -89,9 +83,7 @@ def test(model, valid_loader,prediction,turelabel):
         predictions = torch.max(outputs, 1)
         prediction.extend(predictions.cpu().detach().numpy().tolist())
         turelabel.extend(labels.data.cpu().detach().numpy().tolist())
-        #feature=np.concatenate((feature,model.feature.cpu().detach().numpy()),axis=0)
-       # print(model.feature.size())
-       # print(feature.shape)
+
     return predictions,turelabel 
 
 if __name__ == '__main__':
@@ -138,9 +130,9 @@ if __name__ == '__main__':
          'NUM_MODULES': 1
         }}
     ############### model initialization##################
-    model = models.model_B(num_classes=num_classes)
+    #model = resnet18.model_B(num_classes=num_classes)
     
-    #model=hrnet.get_cls_net(cfg)
+    model=hrnet.get_cls_net(cfg)
     #model=cls_hrnet.get_cls_net(cfg)
     cudnn.benchmark=True
     torch.backends.cudnn.deterministic =False
@@ -165,16 +157,7 @@ if __name__ == '__main__':
     c=[_trainloss,_validloss,_trainacc,_validacc]
     np.savetxt('resultC.txt',c)
 
-    ## test on validation
-    #prediction=[]
-    #turelabel=[]
-    #feature=np.zeros([1,40000])
-    #prediction,turelabel=test(model, valid_loader,prediction,turelabel)
-    #a=[prediction,turelabel]
-    #np.savetxt('contrix.txt',a)
-    #np.savetxt('feature.txt',feature)
-    #print(feature.shape)
-    
+ 
     
 
 
