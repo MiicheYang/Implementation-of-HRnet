@@ -325,10 +325,15 @@ class diy_HRNET(nn.Module):
 		)
 		
 		
+		#### the following parameters are from "cfg" in main.py ####
+		
 		self.stage1=self._make_bottleneck_block(64,32)
+		#### noted that the output channels of bottleneck is 4*out_planes,so 128=4*32 ####
+		
 		
 		self.stage2_cfg=cfg['STAGE2']
 		num_channels=self.stage2_cfg["NUM_CHANNELS"]
+		#### the number "16,32" is same with 'NUM_CHANNELS' in "cfg",make sure they are consistent ####
 		self.transition1=nn.ModuleList([trans(128,16),down(128,32)])
 		self.stage2= self._make_stage(self.stage2_cfg, num_channels)
 		
